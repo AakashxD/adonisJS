@@ -5,7 +5,6 @@ export default defineConfig({
   |--------------------------------------------------------------------------
   | Experimental flags
   |--------------------------------------------------------------------------
-  |
   | The following features will be enabled by default in the next major release
   | of AdonisJS. You can opt into them today to avoid any breaking changes
   | during upgrade.
@@ -31,7 +30,6 @@ export default defineConfig({
   |--------------------------------------------------------------------------
   | Service providers
   |--------------------------------------------------------------------------
-  |
   | List of service providers to import and register when booting the
   | application
   |
@@ -45,14 +43,12 @@ export default defineConfig({
     },
     () => import('@adonisjs/core/providers/vinejs_provider'),
     () => import('@adonisjs/cors/cors_provider'),
-    () => import('@adonisjs/lucid/database_provider')
+    () => import('@adonisjs/lucid/database_provider'),
   ],
-
   /*
   |--------------------------------------------------------------------------
   | Preloads
   |--------------------------------------------------------------------------
-  |
   | List of modules to import before starting the application.
   |
   */

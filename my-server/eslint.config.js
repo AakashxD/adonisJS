@@ -15,5 +15,8 @@ export default configApp({
     'no-useless-constructor': 'off',
     'class-methods-use-this': 'off',
     'no-unused-expressions': 'off',
+    "no-multi-spaces": "off",
+    "space-in-parens": "off",
+    "no-trailing-spaces": "off"
   },
 })
