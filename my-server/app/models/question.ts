@@ -38,6 +38,9 @@ export default class Question extends BaseModel {
 
   @column()
   declare noOfTimesCorrect: number
+  
+  @column()
+  declare isOptionsImage:boolean
 
   @column()
   declare createdBy: number | null

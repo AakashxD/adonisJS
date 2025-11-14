@@ -1,40 +1,75 @@
-import TestQuestion from "#models/test_question"
-import { randomUUID } from "crypto"
-import Test from "#models/tests"
-import { DateTime } from "luxon"
-interface TestData{
-    title:string
-    description:string
-    duration_minutes:number
-    total_questions:number
-    questions_id:number[]
-    starts_at:DateTime
-    ends_at:DateTime
+import TestQuestion from '#models/test_question'
+import Test from '#models/tests'
+import { DateTime } from 'luxon'
+import { randomUUID } from 'crypto'
+import db from '@adonisjs/lucid/services/db'
+import { QuestionService } from '#services/question_service'
+
+interface TestData {
+  title: string
+  description: string
+  duration_minutes: number
+  total_questions: number
+  questions_id: number[]
+  starts_at: DateTime
+  ends_at: DateTime
+  created_by?: number
 }
-export class CreateTestService{
-  
-  async create(data:TestData){
-  
-         const test_id:string=randomUUID()
-    await TestQuestion.createMany(
-      data.questions_id.map((questionId: number, index: number) => ({
-        testId: test_id, 
+
+export class CreateTestService {
+  private questionService = new QuestionService()
+
+  async create(data: TestData): Promise<Test> {
+
+    const trx = await db.transaction()
+
+    try {
+
+      await this.questionService.validateQuestionsExist(data.questions_id)
+
+      // Generate unique test ID
+      const testId: string = randomUUID()
+
+      // Create test-question associations
+      const testQuestions = data.questions_id.map((questionId: number, index: number) => ({
+        testId: testId,
         questionId,
         questionOrder: index + 1,
       }))
-    )
 
-    const test=await Test.create({
-        id:test_id,
-        title:data.title,
-        description:data.description,
-        durationMinutes:data.duration_minutes,
-        totalQuestions:data.total_questions,
-        startsAt:data.starts_at,
-        endsAt:data.ends_at,
+      await TestQuestion.createMany(testQuestions, { client: trx })
 
-    })
-    return test;
+      
+      const test = await Test.create(
+        {
+          id: testId,
+          title: data.title,
+          description: data.description,
+          durationMinutes: data.duration_minutes,
+          totalQuestions: data.total_questions,
+          startsAt: data.starts_at,
+          endsAt: data.ends_at,
+          createdBy: data.created_by ?? null,
+          isActive: true, 
+        },
+        { client: trx }
+      )
+
+      await trx.commit()
+
+      return test;
+    } catch (error) {
+      // Rollback transaction on error
+      await trx.rollback()
+
+      console.error('Error creating test:', error)
+
+      if (error instanceof Error) {
+        throw error
+      }
+
+      throw new Error('Failed to create test')
+    }
   }
 
 }
