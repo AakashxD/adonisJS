@@ -25,7 +25,6 @@ export default class Candidate extends BaseModel {
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
-  // Relationships
   @hasMany(() => TestSubmission, { foreignKey: 'candidateId' })
   declare submissions: HasMany<typeof TestSubmission>
 }

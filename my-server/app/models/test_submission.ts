@@ -18,6 +18,12 @@ export default class TestSubmission extends BaseModel {
   @column()
   declare status: string
 
+  @column({
+    prepare: (value: any) => JSON.stringify(value),
+    consume: (value: string) => JSON.parse(value),
+  })
+  declare answers: Record<string, string>[]
+
   @column()
   declare totalQuestions: number
 
@@ -25,16 +31,19 @@ export default class TestSubmission extends BaseModel {
   declare correctAnswers: number
 
   @column()
+  declare wrongAnswers: number
+
+  @column()
   declare score: number
+
+  @column()
+  declare ipAddress: string | null
 
   @column()
   declare percentage: number | null
 
   @column()
   declare grade: string | null
-
-  @column()
-  declare isSubmitted: boolean
 
   @column.dateTime()
   declare startedAt: DateTime | null

@@ -1,4 +1,7 @@
 // import type { HttpContext } from '@adonisjs/core/http'
 
-export default class TestsController {
+export default class PublishTestsController {
+
+    
 }
+

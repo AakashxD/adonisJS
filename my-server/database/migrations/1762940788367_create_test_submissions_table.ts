@@ -21,34 +21,19 @@ export default class extends BaseSchema {
         .inTable('candidates')
         .onDelete('CASCADE')
       table.string('status', 20).notNullable()
-      // e.g., "in_progress", "submitted", etc.
+      table.json('answers').defaultTo('[]')
       table.integer('total_questions').notNullable()
       table.integer('correct_answers').defaultTo(0)
-      table.integer('score').defaultTo(0)
-      // Numeric score instead of just percentage
+      table.integer('wrong_answers').defaultTo(0)
+      table.decimal('score', 5, 2).defaultTo(0)
+//      table.inet('ip_address')
       table.decimal('percentage', 5, 2).nullable()
       table.string('grade', 5).nullable()
-      table.boolean('is_submitted').defaultTo(false)
-      // IP used to start the attempt
       table.timestamp('started_at').nullable()
       table.timestamp('submitted_at').nullable()
 
-      // Ensure unique student per test (one attempt only)
-      table.unique(['test_id', 'candidate_id'])
-    })
-
-    // Add composite foreign key constraints
-    this.schema.alterTable(this.tableName, (table) => {
-      table
-        .foreign('test_id', 'fk_submission_test')
-        .references('id')
-        .inTable('tests')
-        .onDelete('CASCADE')
-      table
-        .foreign('candidate_id', 'fk_submission_candidate')
-        .references('id')
-        .inTable('candidates')
-        .onDelete('CASCADE')
+      // ONE ATTEMPT PER TEST RULE
+      table.unique(['test_id', 'candidate_id'], 'unique_candidate_test_attempt')
     })
   }
 

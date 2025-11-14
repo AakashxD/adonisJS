@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo, hasMany } from '@adonisjs/lucid/orm'
-import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, belongsTo, manyToMany, hasMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, ManyToMany, HasMany } from '@adonisjs/lucid/types/relations'
 import Admin from './admin.js'
-import TestQuestion from './test_question.js'
+import Question from './question.js'
 import TestSubmission from './test_submission.js'
 
 export default class Test extends BaseModel {
@@ -25,7 +25,7 @@ export default class Test extends BaseModel {
   declare durationMinutes: number
 
   @column.dateTime()
-  declare startedAt: DateTime | null
+  declare startsAt: DateTime | null
 
   @column.dateTime()
   declare endsAt: DateTime | null
@@ -46,8 +46,12 @@ export default class Test extends BaseModel {
   @belongsTo(() => Admin, { foreignKey: 'createdBy' })
   declare admin: BelongsTo<typeof Admin>
 
-  @hasMany(() => TestQuestion, { foreignKey: 'testId' })
-  declare questions: HasMany<typeof TestQuestion>
+  @manyToMany(() => Question, {
+    pivotTable: 'test_questions',
+    pivotForeignKey: 'test_id',
+    pivotRelatedForeignKey: 'question_id',
+  })
+  declare questions: ManyToMany<typeof Question>
 
   @hasMany(() => TestSubmission, { foreignKey: 'testId' })
   declare submissions: HasMany<typeof TestSubmission>

@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 import Test from './tests.js'
-import TestQuestion from './test_question.js'
+import Question from './question.js'
 
 export default class Admin extends BaseModel {
   @column({ isPrimary: true })
@@ -27,6 +27,6 @@ export default class Admin extends BaseModel {
   @hasMany(() => Test, { foreignKey: 'createdBy' })
   declare tests: HasMany<typeof Test>
 
-  @hasMany(() => TestQuestion, { foreignKey: 'createdBy' })
-  declare questions: HasMany<typeof TestQuestion>
+  @hasMany(() => Question, { foreignKey: 'createdBy' })
+  declare questions: HasMany<typeof Question>
 }

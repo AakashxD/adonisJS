@@ -10,6 +10,7 @@ export default class extends BaseSchema {
       table.string('email').notNullable()
       table.string('roll_number').notNullable()
       table.string('college_name').notNullable()
+    //  table.inet('ip_address').notNullable()
       table.timestamp('created_at')
     })
   }

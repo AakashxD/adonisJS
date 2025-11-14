@@ -11,6 +11,10 @@ export default class extends BaseSchema {
       table.string('status', 50).notNullable()
       table.integer('total_questions').notNullable()
       table.integer('duration_minutes').notNullable()
+      table.timestamp('starts_at').nullable()
+      table.timestamp('ends_at').nullable()
+      table.integer('extra_hours').defaultTo(0)
+      table.boolean('is_active').defaultTo(true)
       table
         .integer('created_by') // This is the column that will store the id of the admin who created the test.
         .unsigned()
@@ -18,8 +22,6 @@ export default class extends BaseSchema {
         .references('id')
         .inTable('admins')
         .onDelete('SET NULL')
-      table.timestamp('started_at').nullable()
-      table.timestamp('ended_at').nullable()
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').notNullable()
     })

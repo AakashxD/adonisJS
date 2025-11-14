@@ -1,11 +1,12 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo, hasMany } from '@adonisjs/lucid/orm'
-import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import Test from './tests.js'
-import Admin from './admin.js'
-import CandidateSubmittedAnswer from './candidate_submitted_answer.js'
+import Question from './question.js'
 
 export default class TestQuestion extends BaseModel {
+  public static table = 'test_questions'
+
   @column({ isPrimary: true })
   declare id: number
 
@@ -13,37 +14,10 @@ export default class TestQuestion extends BaseModel {
   declare testId: number
 
   @column()
-  declare questionText: string | null
+  declare questionId: number
 
   @column()
-  declare questionImageUrl: string | null
-
-  @column()
-  declare correctOption: 'A' | 'B' | 'C' | 'D'
-
-  @column()
-  declare optionA: string
-
-  @column()
-  declare optionB: string
-
-  @column()
-  declare optionC: string
-
-  @column()
-  declare optionD: string
-
-  @column()
-  declare difficulty: string
-
-  @column()
-  declare noOfTimesAppeared: number
-
-  @column()
-  declare noOfTimesCorrect: number
-
-  @column()
-  declare createdBy: number | null
+  declare questionOrder: number | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -52,9 +26,6 @@ export default class TestQuestion extends BaseModel {
   @belongsTo(() => Test, { foreignKey: 'testId' })
   declare test: BelongsTo<typeof Test>
 
-  @belongsTo(() => Admin, { foreignKey: 'createdBy' })
-  declare admin: BelongsTo<typeof Admin>
-
-  @hasMany(() => CandidateSubmittedAnswer, { foreignKey: 'questionId' })
-  declare submittedAnswers: HasMany<typeof CandidateSubmittedAnswer>
+  @belongsTo(() => Question, { foreignKey: 'questionId' })
+  declare question: BelongsTo<typeof Question>
 }

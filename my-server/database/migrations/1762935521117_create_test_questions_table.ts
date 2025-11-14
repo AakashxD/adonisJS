@@ -13,30 +13,18 @@ export default class extends BaseSchema {
         .references('id')
         .inTable('tests')
         .onDelete('CASCADE')
-      table.text('question_text').nullable()
-      table.string('question_image_url', 500).nullable()
-      table.text('correct_option').checkIn(['A', 'B', 'C', 'D']).notNullable()
-      // CHECK constraint for correct_option
-      table.text('option_a').notNullable()
-      table.text('option_b').notNullable()
-      table.text('option_c').notNullable()
-      table.text('option_d').notNullable()
-      table.string('difficulty', 20).notNullable()
-      table.integer('no_of_times_appeared').defaultTo(0)
-      table.integer('no_of_times_correct').defaultTo(0)
       table
-        .integer('created_by')
+        .integer('question_id')
         .unsigned()
-        .nullable()
+        .notNullable()
         .references('id')
-        .inTable('admins')
-        .onDelete('SET NULL')
+        .inTable('questions')
+        .onDelete('CASCADE')
+      table.integer('question_order').nullable() // Optional: to maintain question order in test
       table.timestamp('created_at').notNullable().defaultTo(this.now())
-    })
 
-    // Add composite foreign key constraints
-    this.schema.alterTable(this.tableName, (table) => {
-      table.foreign('test_id', 'fk_test').references('id').inTable('tests').onDelete('CASCADE')
+      // Prevent duplicate question in same test
+      table.unique(['test_id', 'question_id'], 'unique_test_question')
     })
   }
 
@@ -44,5 +32,3 @@ export default class extends BaseSchema {
     this.schema.dropTable(this.tableName)
   }
 }
-  
- 
