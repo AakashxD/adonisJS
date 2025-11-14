@@ -7,7 +7,7 @@ import TestSubmission from './test_submission.js'
 
 export default class Test extends BaseModel {
   @column({ isPrimary: true })
-  declare id: number
+  declare id: string
 
   @column()
   declare title: string

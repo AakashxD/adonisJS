@@ -11,7 +11,7 @@ export default class TestQuestion extends BaseModel {
   declare id: number
 
   @column()
-  declare testId: number
+  declare testId: string
 
   @column()
   declare questionId: number
