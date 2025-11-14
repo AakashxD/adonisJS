@@ -7,9 +7,11 @@ import {
   validateUniqueQuestions,
 } from '#validators/test_validator'
 import { DateTime } from 'luxon'
+import { QuestionService } from '#services/question_service'
 
 export default class TestController {
-  private createTestService = new TestService()
+  private TestService = new TestService()
+  private QuestionService=new QuestionService();
 
   public async create({ request, response}: HttpContext) {
     try {
@@ -28,7 +30,7 @@ export default class TestController {
       const createdBy =  1 // Fallback for now
 
       // Create test with all validations passed
-      const createdTest = await this.createTestService.create({
+      const createdTest = await this.TestService.create({
         ...data,
         starts_at: startsAt,
         ends_at: endsAt,
@@ -54,6 +56,35 @@ export default class TestController {
       })
     }
   }
+   public async getTestQuestions({request,response}:HttpContext){
+       try {
+        
+        const { test_id } = request.only(['test_id'])
+        const isValid:Boolean=await this.TestService.exists(test_id);
+        if(!isValid){
+          throw new Error('Invalid test Id')
+        }
 
+           const data = await this.QuestionService.getAlltestQuestions(test_id)
+
+          return response.send(data);
+
+
+       } catch (error) {
+        if (error.messages) {
+        return response.badRequest({
+          message: 'Validation failed',
+          errors: error.messages,
+        })
+      }
+      const message = error instanceof Error ? error.message : 'Failed to create test'
+      
+      return response.badRequest({
+        message,
+      })
+        
+       }
+         
+  }
 
 }

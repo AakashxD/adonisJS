@@ -1,7 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { QuestionService } from '#services/question_service'
 import { createQuestionValidator, validateQuestionContent } from '#validators/question_validator'
-import { UUID } from 'crypto'
 
 export default class QuestionController {
   private questionService = new QuestionService()
@@ -46,8 +45,5 @@ export default class QuestionController {
     }
   }
 
-  public async getTestQuestions(test_id:UUID){
-         
-  }
 
 }
