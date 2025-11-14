@@ -1,8 +1,9 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { QuestionService } from '#services/question_service'
-import { createQuestionValidator, validateQuestionContent } from '#validators/create_question_validator'
+import { createQuestionValidator, validateQuestionContent } from '#validators/question_validator'
+import { UUID } from 'crypto'
 
-export default class QuestionCreationsController {
+export default class QuestionController {
   private questionService = new QuestionService()
 
   public async create({ request, response }: HttpContext) {
@@ -10,6 +11,7 @@ export default class QuestionCreationsController {
 
       // Validate request data
       const payload = await request.validateUsing(createQuestionValidator)
+
       
       // Additional validation: ensure either question_text or question_image_url exists
       validateQuestionContent(payload)
@@ -43,4 +45,9 @@ export default class QuestionCreationsController {
       })
     }
   }
+
+  public async getTestQuestions(test_id:UUID){
+         
+  }
+
 }

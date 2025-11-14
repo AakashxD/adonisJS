@@ -1,15 +1,15 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import { CreateTestService } from '#services/test_creation_service'
+import { TestService } from '#services/test_service'
 import {
   createTestValidator,
   validateTestDates,
   validateQuestionsCount,
   validateUniqueQuestions,
-} from '#validators/create_test_validator'
+} from '#validators/test_validator'
 import { DateTime } from 'luxon'
 
-export default class CreateTestController {
-  private createTestService = new CreateTestService()
+export default class TestController {
+  private createTestService = new TestService()
 
   public async create({ request, response}: HttpContext) {
     try {
@@ -54,4 +54,6 @@ export default class CreateTestController {
       })
     }
   }
+
+
 }

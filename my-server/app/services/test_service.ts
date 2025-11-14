@@ -16,7 +16,7 @@ interface TestData {
   created_by?: number
 }
 
-export class CreateTestService {
+export class TestService {
   private questionService = new QuestionService()
 
   async create(data: TestData): Promise<Test> {
@@ -72,4 +72,13 @@ export class CreateTestService {
     }
   }
 
+  async exists(testId: string):Promise<boolean> {
+    const test = await Test.find(testId)
+
+    if (!test) {
+      return false;
+    }
+
+    return true;
+  }
 }
