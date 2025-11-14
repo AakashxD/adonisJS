@@ -62,7 +62,6 @@ export class QuestionService {
     }
   }
 
-  
   public async exists(questionId: number): Promise<boolean> {
     const question = await Question.find(questionId)
     return question !== null
@@ -113,6 +112,14 @@ export class QuestionService {
     }
     return result as unknown as JSON
   }
+  public async getAllQuestions(): Promise<Question[]> {
+    const questions: Question[] = await Question.all()
+    return questions
+  }
 
+  public async deleteQuestion(questionID:number):Promise<void>{
+    // issue with design  -> discuss in meet
 
+    
+  }
 }

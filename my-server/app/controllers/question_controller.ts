@@ -44,6 +44,29 @@ export default class QuestionController {
       })
     }
   }
+  public async getAllQuestion({response}:HttpContext){
+      try {
+
+        const questions=await this.questionService.getAllQuestions();
+        return response.status(201).send(questions);
+      } 
+      catch (error) {
+           if (error.messages) {
+        return response.badRequest({
+          message: 'Validation failed',
+          errors: error.messages,
+        })
+      }
+
+     
+      const message = error instanceof Error ? error.message : 'Failed to create question'
+      
+      return response.badRequest({
+        message,
+      })
+      }
+
+  }
 
 
 }

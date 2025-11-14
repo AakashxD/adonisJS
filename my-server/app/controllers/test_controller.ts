@@ -56,9 +56,9 @@ export default class TestController {
       })
     }
   }
-   public async getTestQuestions({request,response}:HttpContext){
+  public async getTestQuestions({request,response}:HttpContext){
        try {
-        
+
         const { test_id } = request.only(['test_id'])
         const isValid:Boolean=await this.TestService.exists(test_id);
         if(!isValid){
@@ -67,7 +67,7 @@ export default class TestController {
 
            const data = await this.QuestionService.getAlltestQuestions(test_id)
 
-          return response.send(data);
+          return response.status(201).send(data);
 
 
        } catch (error) {
@@ -79,12 +79,16 @@ export default class TestController {
       }
       const message = error instanceof Error ? error.message : 'Failed to create test'
       
-      return response.badRequest({
+      return response.status(401).badRequest({
         message,
       })
         
        }
          
   }
+  public async submissionTest({request}:HttpContext){
+       
+  }
+  
 
 }
