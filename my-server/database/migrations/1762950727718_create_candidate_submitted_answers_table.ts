@@ -6,7 +6,6 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-      // Keep columns but avoid adding foreign key constraints here to prevent ordering issues
       table.integer('submission_id').unsigned().notNullable()
       table.integer('question_id').unsigned().notNullable()
       table.boolean('is_correct').defaultTo(false)

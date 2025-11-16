@@ -23,7 +23,6 @@ export default class extends BaseSchema {
         .inTable('admins')
         .onDelete('SET NULL')
       table.timestamp('created_at').notNullable()
-      table.timestamp('updated_at').notNullable()
     })
   }
 

@@ -31,6 +31,9 @@ export default class Test extends BaseModel {
   declare endsAt: DateTime | null
 
   @column()
+  declare isOptionsImage:boolean
+
+  @column()
   declare extraHours: number
 
   @column()

@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.increments('id').primary()
       table.text('question_text').nullable()
       table.string('question_image_url', 500).nullable()
-      table.boolean('is_option_image').notNullable()
+      table.boolean('is_options_image').notNullable()
       table
         .enum('correct_option', ['A', 'B', 'C', 'D'])
         .notNullable()

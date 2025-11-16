@@ -8,7 +8,7 @@ import {
 } from '#validators/test_validator'
 import { DateTime } from 'luxon'
 import { QuestionService } from '#services/question_service'
-
+import Admin from '#models/admin'
 export default class TestController {
   private TestService = new TestService()
   private QuestionService=new QuestionService();
@@ -86,8 +86,23 @@ export default class TestController {
        }
          
   }
-  public async submissionTest({request}:HttpContext){
+  public async submissionTest({request,response}:HttpContext){
        // kal implement krna h
+       try {
+          
+const admin = await Admin.create({
+  name: 'Test Admin',
+  email: 'admin@test.com',
+  passwordHash: '12kjgelinrn_6', 
+  role: 'admin',
+})
+response.status(201).send({
+      admin
+})
+       } catch (error) {
+          console.log(error)
+       }
+
   }
   
 

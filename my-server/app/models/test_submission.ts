@@ -37,13 +37,11 @@ export default class TestSubmission extends BaseModel {
   declare score: number
 
   @column()
-  declare ipAddress: string | null
+  declare ipAddress: string 
 
   @column()
   declare percentage: number | null
 
-  @column()
-  declare grade: string | null
 
   @column.dateTime()
   declare startedAt: DateTime | null

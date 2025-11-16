@@ -30,6 +30,21 @@ export class TestService {
       // Generate unique test ID
       const testId: string = randomUUID()
 
+      const test = await Test.create(
+        {
+          id: testId,
+          title: data.title,
+          description: data.description,
+          durationMinutes: data.duration_minutes,
+          status:'published',
+          totalQuestions: data.total_questions,
+          startsAt: data.starts_at,
+          endsAt: data.ends_at,
+          createdBy: data.created_by ?? null,
+          isActive: true, 
+        },
+        { client: trx }
+      )
       // Create test-question associations
       const testQuestions = data.questions_id.map((questionId: number, index: number) => ({
         testId: testId,
@@ -40,21 +55,7 @@ export class TestService {
       await TestQuestion.createMany(testQuestions, { client: trx })
 
       
-      const test = await Test.create(
-        {
-          id: testId,
-          title: data.title,
-          description: data.description,
-          durationMinutes: data.duration_minutes,
-          totalQuestions: data.total_questions,
-          startsAt: data.starts_at,
-          endsAt: data.ends_at,
-          createdBy: data.created_by ?? null,
-          isActive: true, 
-        },
-        { client: trx }
-      )
-
+      
       await trx.commit()
 
       return test;

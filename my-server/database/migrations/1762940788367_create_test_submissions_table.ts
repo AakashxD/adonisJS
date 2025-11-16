@@ -25,9 +25,7 @@ export default class extends BaseSchema {
       table.integer('correct_answers').defaultTo(0)
       table.integer('wrong_answers').defaultTo(0)
       table.decimal('score', 5, 2).defaultTo(0)
-//      table.inet('ip_address')
-      table.decimal('percentage', 5, 2).nullable()
-      table.string('grade', 5).nullable()
+      table.specificType('ip_address', 'inet').notNullable()
       table.timestamp('started_at').nullable()
       table.timestamp('submitted_at').nullable()
 
@@ -35,7 +33,6 @@ export default class extends BaseSchema {
       table.unique(['test_id', 'candidate_id'], 'unique_candidate_test_attempt')
     })
   }
-
   async down() {
     this.schema.dropTable(this.tableName)
   }
