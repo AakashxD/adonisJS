@@ -6,20 +6,9 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-      table
-        .integer('submission_id')
-        .unsigned()
-        .notNullable()
-        .references('id')
-        .inTable('test_submissions')
-        .onDelete('CASCADE')
-      table
-        .integer('question_id')
-        .unsigned()
-        .notNullable()
-        .references('id')
-        .inTable('questions')
-        .onDelete('CASCADE')
+      // Keep columns but avoid adding foreign key constraints here to prevent ordering issues
+      table.integer('submission_id').unsigned().notNullable()
+      table.integer('question_id').unsigned().notNullable()
       table.boolean('is_correct').defaultTo(false)
       table.timestamp('answered_at').nullable()
 

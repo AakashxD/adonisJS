@@ -1,10 +1,13 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
+import { BaseModel, column, hasMany, beforeSave } from '@adonisjs/lucid/orm'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
+import hash from '@adonisjs/core/services/hash'
 import Test from './tests.js'
 import Question from './question.js'
+import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 
 export default class Admin extends BaseModel {
+  static accessTokens = DbAccessTokensProvider.forModel(Admin)
   @column({ isPrimary: true })
   declare id: number
 
@@ -22,6 +25,17 @@ export default class Admin extends BaseModel {
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
+
+  
+  /**
+   * Hash password before saving to database
+   */
+  @beforeSave()
+  static async hashPassword(admin: Admin) {
+    if (admin.$dirty.passwordHash) {
+      admin.passwordHash = await hash.make(admin.passwordHash)
+    }
+  }
 
   // Relationships
   @hasMany(() => Test, { foreignKey: 'createdBy' })
