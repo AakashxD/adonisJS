@@ -1,10 +1,6 @@
 import router from '@adonisjs/core/services/router'
-const BlogController = () => import('#controllers/blog_controller')
+import QuestionController from '#controllers/question_controller'
 
-router.get('/api/blogs', [BlogController, 'getAllBlogs'])
-router.get('/api/blog/:id', [BlogController, 'getBlogById'])
-router.post('/api/blog', [BlogController, 'createBlog'])
-router.put('/api/blog/:id', [BlogController, 'updateBlog'])
-router.delete('/api/blog/:id', [BlogController, 'deleteBlog'])
+router.get('/api/questions', [QuestionController, 'getAllQuestion'])
 
 export default router

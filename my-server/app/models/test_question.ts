@@ -3,7 +3,6 @@ import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import Test from './tests.js'
 import Question from './question.js'
-import { UUID } from 'crypto'
 
 export default class TestQuestion extends BaseModel {
   public static table = 'test_questions'

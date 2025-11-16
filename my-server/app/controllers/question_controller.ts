@@ -23,7 +23,7 @@ export default class QuestionController {
         created_by: createdBy,
       })
 
-      return response.created({
+      return response.status(201).created({
         message: 'Question created successfully',
         data: question,
       })
@@ -59,7 +59,7 @@ export default class QuestionController {
       }
 
      
-      const message = error instanceof Error ? error.message : 'Failed to create question'
+      const message = error instanceof Error ? error.message : 'Failed to get all question'
       
       return response.badRequest({
         message,
@@ -67,6 +67,5 @@ export default class QuestionController {
       }
 
   }
-
 
 }

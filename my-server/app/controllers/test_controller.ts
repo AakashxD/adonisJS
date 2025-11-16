@@ -77,7 +77,7 @@ export default class TestController {
           errors: error.messages,
         })
       }
-      const message = error instanceof Error ? error.message : 'Failed to create test'
+      const message = error instanceof Error ? error.message : 'Failed to check valid test'
       
       return response.status(401).badRequest({
         message,
@@ -87,7 +87,7 @@ export default class TestController {
          
   }
   public async submissionTest({request}:HttpContext){
-       
+       // kal implement krna h
   }
   
 
