@@ -19,17 +19,12 @@ router.get('/api/questions',[QuestionController,'getAllQuestion'])
 router.post('/api/create-test',[TestController,'create'])
 router.get('/api/test-questions/:test_id',[TestController,'getTestQuestions']);
 router.post('/api/submit-test',[TestController,'submissionTest'])
-
+router.get('/api/test-result/:test_id',[TestController,'testResult'])
 router.get('/', async () => {
-  const candidate=await Candidate.create({
-  "name": "John Doe",
-  "email": "john.doe@example.com",
-  "rollNumber": "BCS-001",
-  "collegeName": "ABC College"
-}
 
-  )
-  return { message: 'Welcome to Quiz API',candidate }
+
+  
+  return { message: 'Welcome to Quiz API' }
 })
 
 export default router

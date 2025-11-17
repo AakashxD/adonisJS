@@ -27,7 +27,7 @@ type QuestionJSON = {
 
 export class QuestionService {
 
-  public async create(input: CreateQuestionInput): Promise<Question> {
+   async create(input: CreateQuestionInput): Promise<Question> {
     try {
       let questionImageUrl = input.question_image_url
       let optionAUrl = input.option_a
@@ -62,12 +62,12 @@ export class QuestionService {
     }
   }
 
-  public async exists(questionId: number): Promise<boolean> {
+  async exists(questionId: number): Promise<boolean> {
     const question = await Question.find(questionId)
     return question !== null
   }
 
-  public async validateQuestionsExist(questionIds: number[]): Promise<void> {
+  async validateQuestionsExist(questionIds: number[]): Promise<void> {
     const questions = await Question.query().whereIn('id', questionIds)
     
     if (questions.length !== questionIds.length) {
@@ -76,14 +76,13 @@ export class QuestionService {
       throw new Error(`Questions with IDs ${missingIds.join(', ')} do not exist`)
     }
   }
- public async getAlltestQuestions(testId: string): Promise<any> {
+  async getAlltestQuestions(testId: string): Promise<any> {
   // First, let's see what we get
   const testQuestions = await TestQuestion
     .query()
     .where('test_id', testId)
     .preload('question')
   
-
   const questions = testQuestions
     .filter((tq) => tq.question !== null && tq.question !== undefined)
     .map((tq) => {
@@ -111,14 +110,10 @@ export class QuestionService {
   
   return result
 }
-  public async getAllQuestions(): Promise<Question[]> {
+   async getAllQuestions(): Promise<Question[]> {
     const questions: Question[] = await Question.all()
     return questions
   }
 
-  public async deleteQuestion(questionID:number):Promise<void>{
-    // issue with design  -> discuss in meet
-
-    
-  }
+   
 }

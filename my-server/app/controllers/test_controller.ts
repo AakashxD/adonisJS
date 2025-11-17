@@ -9,7 +9,6 @@ import {
 import { TestsubmissionValidator } from '#validators/test_submission_validator'
 import { DateTime } from 'luxon'
 import { QuestionService } from '#services/question_service'
-import { validateSubmissionCounts,validateSubmissionDates } from '#validators/test_submission_validator'
 export default class TestController {
   private TestService = new TestService()
   private QuestionService=new QuestionService();
@@ -97,7 +96,7 @@ export default class TestController {
         submitted_at:DateTime.fromISO(data.submitted_at),
       }
 
-      
+    
       const submission=await this.TestService.submission(processedData)
 
       return response.created({
@@ -110,6 +109,23 @@ export default class TestController {
         errors: error.messages || error.message,
       })
     }
+  }
+
+  public async testResult({params,response}:HttpContext){
+     try {
+         const {test_id}=params;
+ 
+         const results=await this.TestService.result(test_id);
+         return response.status(200).send({
+           message:"result data",
+           data: results
+         })
+     } catch (error) {
+       return response.badRequest({
+        message: 'Test Result failed',
+        errors: error.messages || error.message,
+      })
+     }
   }
 
 

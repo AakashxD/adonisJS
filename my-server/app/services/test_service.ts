@@ -112,5 +112,37 @@ export class TestService {
 })
     return test_submission
   }
-  
+  async result(testId:string){
+         const submissions = await TestSubmission.query()
+        .where('test_id', testId)
+        .preload('test')
+        .preload('candidate')
+
+
+      
+      const results = submissions.map((submission) => {
+       
+        // const attempted = submission.totalQuestions - (
+        //   Object.values(submission.answers || {}).filter(
+        //     (answer: any) => answer.selected_option === null
+        //   ).length
+        // )
+
+        return {
+          submission_id: submission.id,
+          test_id: submission.testId,
+          test_name: submission.test.title,
+          candidate_id: submission.candidateId,
+          candidate_name: submission.candidate.name,
+          score: submission.correctAnswers,
+          status: submission.status,
+          total_questions: submission.totalQuestions,
+          correct_answers: submission.correctAnswers,
+          started_at: submission.startedAt,
+          submitted_at: submission.submittedAt,
+        }
+      })
+
+      return results;
+  }
 }
