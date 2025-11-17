@@ -7,10 +7,10 @@ import CandidateSubmittedAnswer from './candidate_submitted_answer.js'
 
 export default class TestSubmission extends BaseModel {
   @column({ isPrimary: true })
-  declare id: number
+  declare id: number  // make it into UUID
 
-  @column()
-  declare testId: number
+  @column({ columnName: 'test_id' })
+  declare testId: string
 
   @column()
   declare candidateId: number
@@ -18,11 +18,8 @@ export default class TestSubmission extends BaseModel {
   @column()
   declare status: string
 
-  @column({
-    prepare: (value: any) => JSON.stringify(value),
-    consume: (value: string) => JSON.parse(value),
-  })
-  declare answers: Record<string, string>[]
+  @column()
+ declare answers: JSON
 
   @column()
   declare totalQuestions: number

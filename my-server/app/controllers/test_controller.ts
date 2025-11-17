@@ -6,9 +6,10 @@ import {
   validateQuestionsCount,
   validateUniqueQuestions,
 } from '#validators/test_validator'
+import { TestsubmissionValidator } from '#validators/test_submission_validator'
 import { DateTime } from 'luxon'
 import { QuestionService } from '#services/question_service'
-import Admin from '#models/admin'
+import { validateSubmissionCounts,validateSubmissionDates } from '#validators/test_submission_validator'
 export default class TestController {
   private TestService = new TestService()
   private QuestionService=new QuestionService();
@@ -18,7 +19,6 @@ export default class TestController {
     
       const data = await request.validateUsing(createTestValidator)
 
-      // Convert date strings to DateTime objects
       const startsAt = DateTime.fromJSDate(data.starts_at)
       const endsAt = DateTime.fromJSDate(data.ends_at)
 
@@ -56,18 +56,18 @@ export default class TestController {
       })
     }
   }
-  public async getTestQuestions({request,response}:HttpContext){
+  public async getTestQuestions({response,params}:HttpContext){
        try {
-
-        const { test_id } = request.only(['test_id'])
+        const{  test_id } =params;
+        console.log(test_id);
         const isValid:Boolean=await this.TestService.exists(test_id);
         if(!isValid){
           throw new Error('Invalid test Id')
         }
 
-           const data = await this.QuestionService.getAlltestQuestions(test_id)
+        const data = await this.QuestionService.getAlltestQuestions(test_id)
 
-          return response.status(201).send(data);
+        return response.status(200).send(data);
 
 
        } catch (error) {
@@ -79,31 +79,38 @@ export default class TestController {
       }
       const message = error instanceof Error ? error.message : 'Failed to check valid test'
       
-      return response.status(401).badRequest({
+      return response.status(400).badRequest({
         message,
       })
         
        }
          
   }
-  public async submissionTest({request,response}:HttpContext){
-       // kal implement krna h
-       try {
-          
-const admin = await Admin.create({
-  name: 'Test Admin',
-  email: 'admin@test.com',
-  passwordHash: '12kjgelinrn_6', 
-  role: 'admin',
-})
-response.status(201).send({
-      admin
-})
-       } catch (error) {
-          console.log(error)
-       }
+  public async submissionTest({ request, response }: HttpContext){
+    try {
+      const data = await request.validateUsing(TestsubmissionValidator)
 
+      // Convert string dates to Date objects
+      const processedData = {
+        ...data,
+        started_at: DateTime.fromISO(data.started_at),
+        submitted_at:DateTime.fromISO(data.submitted_at),
+      }
+
+      
+      const submission=await this.TestService.submission(processedData)
+
+      return response.created({
+        message: 'Test submission created successfully',
+        data: submission,
+      })
+    } catch (error) {
+      return response.badRequest({
+        message: 'Validation failed',
+        errors: error.messages || error.message,
+      })
+    }
   }
-  
+
 
 }

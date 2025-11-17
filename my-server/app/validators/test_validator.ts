@@ -18,17 +18,16 @@ export const createTestValidator = vine.compile(
 export const validateTestDates = (startsAt: DateTime, endsAt: DateTime) => {
   const now = DateTime.now()
   
-  // Check if starts_at is in the future
   if (startsAt < now) {
     throw new Error('Test start date must be in the future')
   }
   
-  // Check if ends_at is after starts_at
+
   if (endsAt <= startsAt) {
     throw new Error('Test end date must be after start date')
   }
   
-  // Check if test duration is reasonable (e.g., not more than 30 days)
+
   const durationInDays = endsAt.diff(startsAt, 'days').days
   if (durationInDays > 30) {
     throw new Error('Test duration cannot exceed 30 days')

@@ -1,10 +1,11 @@
 import TestQuestion from '#models/test_question'
 import Test from '#models/tests'
 import { DateTime } from 'luxon'
-import { randomUUID } from 'crypto'
+import { randomUUID, UUID } from 'crypto'
 import db from '@adonisjs/lucid/services/db'
 import { QuestionService } from '#services/question_service'
-import { HttpContext } from '@adonisjs/core/http'
+import TestSubmission from '#models/test_submission'
+
 interface TestData {
   title: string
   description: string
@@ -15,7 +16,17 @@ interface TestData {
   ends_at: DateTime
   created_by?: number
 }
-
+export type SubmissionPayload = {
+  test_id: string
+  candidate_id: number
+  status: 'started' | 'submitted' | 'timeout'
+  answers?:JSON | any
+  total_questions: number
+  correct_answers: number
+  ip_address: string
+  started_at: DateTime
+  submitted_at: DateTime
+}
 export class TestService {
   private questionService = new QuestionService()
 
@@ -82,6 +93,24 @@ export class TestService {
 
     return true;
   }
-
+  async submission(data: SubmissionPayload) {
+    const percentage = Number(
+      ((data.correct_answers / data.total_questions) * 100).toFixed(2)
+    )
+  const test_submission = await TestSubmission.create({
+  testId: data.test_id,
+  candidateId: data.candidate_id,
+  status: data.status,
+  answers: data.answers,
+  totalQuestions: data.total_questions,
+  correctAnswers: data.correct_answers,
+  ipAddress: data.ip_address,
+  score: data.correct_answers,
+  percentage,
+  startedAt: data.started_at,
+  submittedAt: data.submitted_at,
+})
+    return test_submission
+  }
   
 }

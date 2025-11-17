@@ -1,4 +1,5 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
+import { DateTime } from 'luxon';
 
 export default class extends BaseSchema {
   protected tableName = 'test_submissions'
@@ -20,7 +21,7 @@ export default class extends BaseSchema {
         .inTable('candidates')
         .onDelete('CASCADE')
       table.string('status', 20).notNullable()
-      table.json('answers').defaultTo('[]')
+      table.jsonb('answers')
       table.integer('total_questions').notNullable()
       table.integer('correct_answers').defaultTo(0)
       table.integer('wrong_answers').defaultTo(0)

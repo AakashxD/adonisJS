@@ -76,42 +76,41 @@ export class QuestionService {
       throw new Error(`Questions with IDs ${missingIds.join(', ')} do not exist`)
     }
   }
-  public async getAlltestQuestions(testId: string): Promise<JSON> {
-    const testQuestions = await TestQuestion
-      .query()
-      .where('test_id', testId)
-      .preload('question') 
+ public async getAlltestQuestions(testId: string): Promise<any> {
+  // First, let's see what we get
+  const testQuestions = await TestQuestion
+    .query()
+    .where('test_id', testId)
+    .preload('question')
+  
 
-    const questions: QuestionJSON[] = testQuestions
-      .filter((tq) => tq.question)
-      .map((tq) => {
-        // Lucid model → plain object
-        const q = tq.question!.toJSON() as any
+  const questions = testQuestions
+    .filter((tq) => tq.question !== null && tq.question !== undefined)
+    .map((tq) => {
+      const q = tq.question!
+      
+      return {
+        question_text: q.questionText,
+        question_image_url: q.questionImageUrl,
+        correct_option: q.correctOption,
+        is_options_image: q.isOptionsImage,
+        option_a: q.optionA,
+        option_b: q.optionB,
+        option_c: q.optionC,
+        option_d: q.optionD,
+        difficulty: q.difficulty,
+        created_by: q.createdBy,
+      }
+    })
 
-        // Map exactly what you want to expose
-        const oneQuestion: QuestionJSON = {
-          question_text: q.question_text,
-          question_image_url: q.question_image_url,
-          correct_option: q.correct_option,
-          is_options_image: q.is_options_image,
-          option_a: q.option_a,
-          option_b: q.option_b,
-          option_c: q.option_c,
-          option_d: q.option_d,
-          difficulty: q.difficulty,
-          created_by: q.created_by,
-        }
-
-        return oneQuestion
-      })
-
-    const result = {
-      test_id: testId,
-      total_questions: questions.length,
-      questions,
-    }
-    return result as unknown as JSON
+  const result = {
+    test_id: testId,
+    total_questions: questions.length,
+    questions,
   }
+  
+  return result
+}
   public async getAllQuestions(): Promise<Question[]> {
     const questions: Question[] = await Question.all()
     return questions

@@ -4,7 +4,7 @@ import { adminRegisterValidator } from '#validators/admin_register'
 import { adminLoginValidator } from '#validators/admin_login'
 import hash from '@adonisjs/core/services/hash'
 
-// Extend HttpContext to include auth property
+
 declare module '@adonisjs/core/http' {
   interface HttpContext {
     auth: any
@@ -12,15 +12,13 @@ declare module '@adonisjs/core/http' {
 }
 
 export default class AdminsController {
-  /**
-   * Register a new admin
-   */
+
   public async register({ request, response, auth }: HttpContext) {
     try {
-      // Validate request data
+     
       const payload = await request.validateUsing(adminRegisterValidator)
 
-      // Check if email already exists
+      
       const existingAdmin = await Admin.findBy('email', payload.email)
       if (existingAdmin) {
         return response.badRequest({
@@ -28,15 +26,15 @@ export default class AdminsController {
         })
       }
 
-      // Create admin - password will be hashed by @beforeSave hook
+      
       const admin = await Admin.create({
         name: payload.name,
         email: payload.email,
-        passwordHash: payload.password, // Will be hashed by model hook
+        passwordHash: payload.password, 
         role: payload.role,
       })
 
-      // Create access token for the newly registered admin
+      
       const token = await auth.use('admin').createToken(admin)
 
       return response.status(201).created({
@@ -67,15 +65,13 @@ export default class AdminsController {
     }
   }
 
-  /**
-   * Login admin and return JWT token
-   */
+
   public async login({ request, response, auth }: HttpContext) {
     try {
-      // Validate request data
+     
       const payload = await request.validateUsing(adminLoginValidator)
 
-      // Find admin by email
+     
       const admin = await Admin.findBy('email', payload.email)
       if (!admin) {
         return response.unauthorized({
@@ -91,7 +87,7 @@ export default class AdminsController {
         })
       }
 
-      // Create access token for the authenticated admin
+     
       const token = await auth.use('admin').createToken(admin)
 
       return response.ok({

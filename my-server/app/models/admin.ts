@@ -17,7 +17,7 @@ export default class Admin extends BaseModel {
   @column()
   declare email: string
 
-  @column({ serializeAs: null }) // Hide password from JSON responses
+  @column({ serializeAs: null }) 
   declare passwordHash: string
 
   @column()
@@ -27,9 +27,7 @@ export default class Admin extends BaseModel {
   declare createdAt: DateTime
 
   
-  /**
-   * Hash password before saving to database
-   */
+
   @beforeSave()
   static async hashPassword(admin: Admin) {
     if (admin.$dirty.passwordHash) {
