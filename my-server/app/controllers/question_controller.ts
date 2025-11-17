@@ -5,7 +5,7 @@ import { createQuestionValidator, validateQuestionContent } from '#validators/qu
 export default class QuestionController {
   private questionService = new QuestionService()
 
-  public async create({ request, response }: HttpContext) {
+  public async create({ request, response,auth }: HttpContext) {
     try {
 
       // Validate request data
@@ -16,7 +16,7 @@ export default class QuestionController {
       validateQuestionContent(payload)
 
       // Get authenticated admin user ID (replace with actual auth after setup)
-      const createdBy =  1 // Fallback for now
+      const createdBy =  auth.admin.id ?? 1// Fallback for now
 
       const question = await this.questionService.create({
         ...payload,

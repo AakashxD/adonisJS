@@ -13,7 +13,7 @@ export default class TestController {
   private TestService = new TestService()
   private QuestionService=new QuestionService();
 
-  public async create({ request, response}: HttpContext) {
+  public async create({ request, response,auth}: HttpContext) {
     try {
     
       const data = await request.validateUsing(createTestValidator)
@@ -26,7 +26,7 @@ export default class TestController {
       validateUniqueQuestions(data.questions_id)
 
       // Get authenticated admin user ID (replace with actual auth after setup)
-      const createdBy =  1 // Fallback for now
+      const createdBy =  auth.admin.id?? 1 // Fallback for now
 
       // Create test with all validations passed
       const createdTest = await this.TestService.create({

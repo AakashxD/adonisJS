@@ -4,7 +4,6 @@ import AdminsController from '#controllers/admins_controller'
 import { middleware } from './kernel.js'
 import TestController from '#controllers/test_controller'
 
-import Candidate from '#models/candidate'
 // Admin authentication routes
 router.post('/register', [AdminsController, 'register'])
 router.post('/login', [AdminsController, 'login'])
@@ -20,6 +19,9 @@ router.post('/api/create-test',[TestController,'create'])
 router.get('/api/test-questions/:test_id',[TestController,'getTestQuestions']);
 router.post('/api/submit-test',[TestController,'submissionTest'])
 router.get('/api/test-result/:test_id',[TestController,'testResult'])
+
+
+
 router.get('/', async () => {
 
 
