@@ -90,10 +90,16 @@ export default class TestController {
       const data = await request.validateUsing(TestsubmissionValidator)
 
       // Convert string dates to Date objects
+
+      const started_at:DateTime=DateTime.fromISO(data.started_at);
+      const submitted_at:DateTime=DateTime.fromISO(data.submitted_at)
+      if(started_at>=submitted_at) {
+         throw new Error('Start time must be earlier than end time')
+      }
       const processedData = {
         ...data,
-        started_at: DateTime.fromISO(data.started_at),
-        submitted_at:DateTime.fromISO(data.submitted_at),
+        started_at,
+        submitted_at
       }
 
     
