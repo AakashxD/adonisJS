@@ -7,7 +7,7 @@ import TestController from '#controllers/test_controller'
 // Admin authentication routes
 router.post('/register', [AdminsController, 'register'])
 router.post('/login', [AdminsController, 'login'])
-// router.get('/me', [AdminsController, 'me']).use(middleware.auth({ guards: ['admins'] }))
+router.get('/me', [AdminsController, 'me']).use(middleware.auth())
 
 
 router.post('/api/create-question',[QuestionController,'create'])
