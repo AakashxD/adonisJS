@@ -15,8 +15,8 @@ export default class QuestionController {
       // Additional validation: ensure either question_text or question_image_url exists
       validateQuestionContent(payload)
 
-      // Get authenticated admin user ID (replace with actual auth after setup)
-      const createdBy =  auth.admin.id ?? 1// Fallback for now
+    
+      const createdBy =  auth.admin.id ?? 1
 
       const question = await this.questionService.create({
         ...payload,

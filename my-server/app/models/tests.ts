@@ -18,28 +18,28 @@ export default class Test extends BaseModel {
   @column()
   declare status: string
 
-  @column()
+  @column({columnName:'total_questions'})
   declare totalQuestions: number
 
-  @column()
+  @column({columnName:'durations_minutes'})
   declare durationMinutes: number
 
-  @column.dateTime()
+  @column.dateTime({columnName:'starts_at'})
   declare startsAt: DateTime | null
 
-  @column.dateTime()
+  @column.dateTime({columnName:'ends_at'})
   declare endsAt: DateTime | null
 
-  @column()
+  @column({columnName:'is_options_image'})
   declare isOptionsImage:boolean
 
-  @column()
+  @column({columnName:'extra_hours'})
   declare extraHours: number
 
-  @column()
+  @column({columnName:'is_active'})
   declare isActive: boolean
 
-  @column()
+  @column({columnName:'created_by'})
   declare createdBy: number | null
 
   @column.dateTime({ autoCreate: true })

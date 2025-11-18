@@ -127,6 +127,24 @@ export default class TestController {
       })
      }
   }
+  public async tests({response}:HttpContext){
+    try {
+      const data=await this.TestService.tests();
+
+      return response.status(200).send({
+          message:"All tests",
+          tests:data
+      })
+    } catch (error) {
+        return response.badRequest({
+        message: 'Validation failed',
+        errors: error.messages || error.message,
+      })
+    }
+        
+
+
+  }
 
 
 }

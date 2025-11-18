@@ -1,7 +1,7 @@
 import TestQuestion from '#models/test_question'
 import Test from '#models/tests'
 import { DateTime } from 'luxon'
-import { randomUUID, UUID } from 'crypto'
+import { randomUUID } from 'crypto'
 import db from '@adonisjs/lucid/services/db'
 import { QuestionService } from '#services/question_service'
 import TestSubmission from '#models/test_submission'
@@ -144,5 +144,10 @@ export class TestService {
       })
 
       return results;
+  }
+  async tests(): Promise<Test[]> {
+    const tests = await Test.all()
+
+    return tests;
   }
 }
