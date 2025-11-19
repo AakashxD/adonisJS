@@ -5,11 +5,12 @@ import { adminLoginValidator } from '#validators/admin_login'
 import hash from '@adonisjs/core/services/hash'
 
 
+
 declare module '@adonisjs/core/http' {
   interface HttpContext {
     auth: any
   }
-}
+} 
 
 export default class AdminsController {
 
@@ -124,17 +125,13 @@ export default class AdminsController {
    */
     public async me({ response, auth }: HttpContext) {
       try {
-        // Authenticate using JWT guard
-        const admin = await auth.use('admin').authenticate()
+        
+    
 
         return response.ok({
           message: 'Admin retrieved successfully',
           data: {
-            id: admin.id,
-            name: admin.name,
-            email: admin.email,
-            role: admin.role,
-            createdAt: admin.createdAt,
+          auth: auth.user,
           },
         })
       } catch (err) {
