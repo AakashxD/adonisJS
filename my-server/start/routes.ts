@@ -10,19 +10,20 @@ router.post('/login', [AdminsController, 'login'])
 router.get('/me', [AdminsController, 'me']).use(middleware.auth())
 
 
-router.post('/api/create-question',[QuestionController,'create'])
-router.get('/api/questions',[QuestionController,'getAllQuestion'])
+router.post('/api/create-question',[QuestionController,'create']).use(middleware.auth())
+router.get('/api/questions',[QuestionController,'getAllQuestion']).use(middleware.auth())
 
+ 
 
+router.post('/api/create-test',[TestController,'create']).use(middleware.auth())
 
-router.post('/api/create-test',[TestController,'create'])
-router.get('/api/test-questions/:test_id',[TestController,'getTestQuestions']);
-router.post('/api/submit-test',[TestController,'submissionTest'])
-router.get('/api/test-result/:test_id',[TestController,'testResult'])
-router.get('/api/tests',[TestController,'tests']);
-
+router.get('/api/test-questions/:test_id',[TestController,'getTestQuestions']).use(middleware.auth())
+router.post('/api/submit-test',[TestController,'submissionTest']).use(middleware.auth())
+router.get('/api/test-result/:test_id',[TestController,'testResult']).use(middleware.auth())
+router.get('/api/tests',[TestController,'tests']).use(middleware.auth());
 
 router.get('/', async () => {
+
 
 
   
