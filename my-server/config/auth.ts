@@ -1,14 +1,16 @@
 import { defineConfig } from '@adonisjs/auth'
 import { tokensGuard, tokensUserProvider } from '@adonisjs/auth/access_tokens'
 
-export default defineConfig({
+const authConfig = defineConfig({
   default: 'admin',
   guards: {
     admin: tokensGuard({
       provider: tokensUserProvider({
+        tokens: 'accessTokens',
         model: () => import('#models/admin'),
-        tokens: 'accessTokens', // refers to Admin.accessTokens
       }),
     }),
   },
 })
+
+export default authConfig
