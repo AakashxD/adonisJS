@@ -14,7 +14,6 @@ export const createQuestionValidator = vine.compile(
   })
 )
 
-
 export const validateQuestionContent = (data: any) => {
   if (!data.question_text && !data.question_image_url) {
     throw new Error('Either question_text or question_image_url must be provided')

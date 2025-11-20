@@ -27,7 +27,7 @@ type QuestionJSON = {
 
 export class QuestionService {
 
-   async create(input: CreateQuestionInput): Promise<Question> {
+  async create(input: CreateQuestionInput): Promise<Question> {
     try {
       let questionImageUrl = input.question_image_url
       let optionAUrl = input.option_a
@@ -77,7 +77,7 @@ export class QuestionService {
     }
   }
   async getAlltestQuestions(testId: string): Promise<any> {
-  // First, let's see what we get
+
   const testQuestions = await TestQuestion
     .query()
     .where('test_id', testId)
@@ -110,10 +110,9 @@ export class QuestionService {
   
   return result
 }
-   async getAllQuestions(): Promise<Question[]> {
+  async getAllQuestions(): Promise<Question[]> {
     const questions: Question[] = await Question.all()
     return questions
   }
-
    
 }
